@@ -3,35 +3,24 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "BASTET - Sistema Operativo de Gestao da LHF-Foundation. Fase 1: Cadastro, Operacoes de Campo e Pessoas.",
+  "description": "BASTET - Sistema Operativo de Gestao da LHF-Foundation.",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
   "scripts": {
-    "dev": "vite --port=3000",
-    "build": "tsc --noEmit && vite build",
-    "preview": "vite preview",
-    "lint": "tsc --noEmit",
-    "test": "vitest run",
-    "test:watch": "vitest"
-  },
-  "dependencies": {
-    "dexie": "^4.0.11",
-    "dexie-react-hooks": "^1.1.7",
-    "lucide-react": "^0.546.0",
-    "motion": "^12.23.24",
-    "react": "^19.0.1",
-    "react-dom": "^19.0.1",
-    "react-router-dom": "^7.1.5",
-    "zod": "^3.24.1"
+    "dev": "npm run dev --workspace @bastet/web",
+    "dev:api": "npm run dev --workspace @bastet/api",
+    "build": "npm run build --workspace @bastet/web",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "bd:subir": "docker compose --file infra/docker-compose.yml up --detach",
+    "bd:descer": "docker compose --file infra/docker-compose.yml down",
+    "bd:migrar": "npm run migrar --workspace @bastet/api"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.1.14",
     "@types/node": "^22.14.0",
-    "@types/react": "^19.0.10",
-    "@types/react-dom": "^19.0.4",
-    "@vitejs/plugin-react": "^5.0.4",
-    "fake-indexeddb": "^6.0.0",
-    "tailwindcss": "^4.1.14",
     "typescript": "~5.8.2",
-    "vite": "^6.2.3",
     "vitest": "^3.0.5"
   }
 }

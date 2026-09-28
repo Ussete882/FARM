@@ -1,0 +1,29 @@
+{
+  "name": "@bastet/nucleo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Modelo canonico e motor de regras. Puro: sem React, sem Dexie, sem rede.",
+  "exports": {
+    "./canonico": "./src/dominio/canonico.ts",
+    "./biologico": "./src/dominio/biologico.ts",
+    "./codigos": "./src/dominio/codigos.ts",
+    "./formatar": "./src/dominio/formatar.ts",
+    "./indicadores": "./src/dominio/indicadores.ts",
+    "./operacoes": "./src/dominio/operacoes.ts",
+    "./parametros": "./src/dominio/parametros.ts",
+    "./pessoas": "./src/dominio/pessoas.ts",
+    "./territorio": "./src/dominio/territorio.ts",
+    "./calculos": "./src/regras/calculos.ts",
+    "./desvio": "./src/regras/desvio.ts",
+    "./historico": "./src/regras/historico.ts",
+    "./semaforo": "./src/regras/semaforo.ts",
+    "./validacao": "./src/regras/validacao.ts",
+    "./i18n": "./src/i18n/nucleo.ts",
+    "./versao": "./src/versao.ts"
+  },
+  "scripts": {
+    "lint": "tsc --noEmit",
+    "test": "vitest run"
+  }
+}

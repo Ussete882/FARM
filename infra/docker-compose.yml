@@ -1,0 +1,31 @@
+# PostgreSQL para desenvolvimento local.
+#
+# A porta é a 5433 e não a 5432 de propósito: se houver um Postgres instalado
+# na máquina, os dois convivem sem se pisarem.
+#
+# A palavra-passe aqui é local e não é segredo nenhum. Quando isto for para a
+# nuvem, vem de variável de ambiente e nunca de um ficheiro no repositório.
+
+services:
+  bd:
+    image: postgres:17-alpine
+    container_name: bastet-bd
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: bastet
+      POSTGRES_PASSWORD: bastet
+      POSTGRES_DB: bastet
+      # Português de Moçambique na ordenação; o dado é o mesmo, a ordem não.
+      LANG: pt_PT.utf8
+    ports:
+      - '5433:5432'
+    volumes:
+      - bastet-dados:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U bastet -d bastet']
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+volumes:
+  bastet-dados:

@@ -28,6 +28,7 @@ import {
   Menu,
   PieChart,
   Plus,
+  RefreshCw,
   Scale,
   Search,
   Settings,
@@ -271,6 +272,17 @@ export const GRUPOS: Grupo[] = [
           zh: '待决参数事项',
         },
         icone: AlertOctagon,
+      },
+      {
+        para: '/sincronizacao',
+        rotulo: { pt: 'Sincronização', en: 'Sync', zh: '同步' },
+        titulo: {
+          pt: 'Por sincronizar',
+          en: 'Pending synchronisation',
+          zh: '待同步',
+        },
+        icone: RefreshCw,
+        formulario: '§25',
       },
       {
         para: '/parametros',

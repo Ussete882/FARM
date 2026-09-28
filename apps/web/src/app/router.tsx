@@ -13,6 +13,7 @@ import { Jornas } from '../modulos/M3Pessoas/Jornas';
 import { Trabalhadores } from '../modulos/M3Pessoas/Trabalhadores';
 import { Parametros } from '../modulos/Governacao/Parametros';
 import { Pendencias } from '../modulos/Governacao/Pendencias';
+import { Sincronizacao } from '../modulos/Governacao/Sincronizacao';
 import { Indicadores } from '../modulos/Paineis/Indicadores';
 import { PainelDiario } from '../modulos/Paineis/PainelDiario';
 
@@ -52,6 +53,7 @@ export const router = createBrowserRouter([
       // Governação
       { path: 'pendencias', element: <Pendencias /> },
       { path: 'parametros', element: <Parametros /> },
+      { path: 'sincronizacao', element: <Sincronizacao /> },
     ],
   },
 ]);

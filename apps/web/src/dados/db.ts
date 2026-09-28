@@ -27,6 +27,8 @@ import type { Arvore, Bloco, FonteAgua, Talhao } from '@bastet/nucleo/territorio
 
 /** Divergência ou parâmetro por resolver, assinalado pelo documento. */
 import type { Pendencia } from '@bastet/nucleo/governacao';
+import type { EntradaSaida } from '@bastet/nucleo/sincronizacao';
+import type { Constatacao } from '@bastet/nucleo/validacao';
 
 export type { Pendencia };
 
@@ -58,6 +60,10 @@ export class BastetDB extends Dexie {
   medicoes!: EntityTable<Medicao, 'id'>;
   pendencias!: EntityTable<Pendencia, 'id'>;
 
+  // --- Sincronização (§25) ---
+  saida!: EntityTable<NaSaida, 'id'>;
+  estado!: EntityTable<Estado, 'chave'>;
+
   constructor() {
     super('bastet');
     this.version(1).stores({
@@ -84,7 +90,38 @@ export class BastetDB extends Dexie {
       medicoes: 'id, indicador, periodo, ambito, [indicador+periodo]',
       pendencias: 'id, &codigo, categoria, estado',
     });
+
+    // A caixa de saída chega na versão 2. As tabelas anteriores não mudam:
+    // quem já tem a base no telemóvel não perde nada ao actualizar.
+    this.version(2).stores({
+      saida: '++id, estadoEnvio, criada',
+      estado: 'chave',
+    });
   }
+}
+
+/**
+ * Uma escrita à espera de sair do aparelho.
+ *
+ * Fica aqui desde que o utilizador grava até o servidor a aceitar. Entre as
+ * duas coisas pode passar uma semana — é o que acontece quando o registo se
+ * faz no campo e a rede está na estrada.
+ */
+export interface NaSaida extends EntradaSaida {
+  estadoEnvio: 'pendente' | 'aceite' | 'recusada';
+  criada: string;
+  /** Preenchidos quando o servidor recusa. */
+  motivo?: string;
+  detalhe?: string;
+  constatacoes?: Constatacao[];
+  /** No conflito: o que o servidor tem, para se poder decidir (§24.5). */
+  actual?: unknown;
+}
+
+/** Pares chave-valor do aparelho: cursor, testemunho, último contacto. */
+export interface Estado {
+  chave: string;
+  valor: string;
 }
 
 export const db = new BastetDB();
@@ -110,6 +147,8 @@ export const TABELAS = [
   'formacoes',
   'medicoes',
   'pendencias',
+  'saida',
+  'estado',
 ] as const;
 
 export type NomeTabela = (typeof TABELAS)[number];

@@ -14,14 +14,35 @@ em IndexedDB, em **português, inglês e mandarim**.
 npm install && npm run dev
 ```
 
-A primeira abertura semeia a base com os dados da Farma Alcinda. Os registos
-ficam no navegador; recarregar não os perde.
+O cliente sozinho funciona: semeia a base local com os dados da Farma Alcinda e
+escreve no IndexedDB. Para o servidor:
 
 ```bash
-npm run lint    # tsc --noEmit
-npm test        # motor de regras
+npm run bd:subir && npm run bd:migrar && npm run semear --workspace @bastet/api
+npm run dev:api
+```
+
+A Direcção entra em *Governação · Sincronização* com `DIR-01` e a palavra-passe
+de `BASTET_PALAVRA_PASSE` (`alcinda`, em desenvolvimento).
+
+```bash
+npm run lint    # tsc --noEmit nos três workspaces
+npm test        # 73 testes do núcleo, 7 de integração
 npm run build
 ```
+
+## Como está arrumado
+
+| | |
+|---|---|
+| `packages/nucleo` | Modelo canónico e motor de regras. Puro: sem React, sem Dexie, sem rede. |
+| `apps/web` | Cliente. Funciona sem rede e sincroniza quando houver sinal. |
+| `apps/api` | Servidor. Corre **o mesmo** motor de regras, sobre PostgreSQL. |
+| `infra` | Postgres em Docker e as migrações. |
+
+O motor de regras não está duplicado: é um pacote, importado pelos dois lados.
+Cada escrita que sai de um aparelho declara a versão dele — um telemóvel a
+correr regras antigas é um telemóvel que não grava.
 
 ## Estado
 
@@ -139,17 +160,6 @@ no INSS e 5 sem apólice de acidentes.
 Estes números são para ser olhados, não para impressionar.
 
 ## O que se segue
-
-**Bloco 2 — o servidor.** Com nove formulários a escrever, o IndexedDB de um
-separador deixou de chegar: quarenta pessoas em dois blocos não partilham uma
-base que vive num navegador.
-
-- Postgres com o mesmo modelo canónico — mapeia um-para-um, o `dominio/` não muda
-- O motor de regras a correr também do lado do servidor, sem alterações
-- Autenticação e a matriz de papéis do §24.5, com os poderes de bloqueio da
-  Qualidade e da Conformidade
-- Sincronização diferida com resolução determinística de conflitos (§25) — sem
-  isto o F-05 não se preenche no campo
 
 **Bloco 3 — Fase 2 do documento, «Digitalizar».** M5 rastreabilidade primeiro
 (formação de lote, secagem, transformação com balanço de massa, análises,

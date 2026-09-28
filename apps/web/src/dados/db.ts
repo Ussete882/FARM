@@ -24,27 +24,11 @@ import type {
 } from '@bastet/nucleo/operacoes';
 import type { Equipa, Formacao, Jorna, Trabalhador } from '@bastet/nucleo/pessoas';
 import type { Arvore, Bloco, FonteAgua, Talhao } from '@bastet/nucleo/territorio';
-import type { T } from '@bastet/nucleo/i18n';
 
 /** Divergência ou parâmetro por resolver, assinalado pelo documento. */
-export interface Pendencia {
-  id: string;
-  codigo: string;
-  titulo: T;
-  descricao: T;
-  categoria:
-    | 'quadro_pessoal'
-    | 'parametro_legal'
-    | 'meta_tecnica'
-    | 'area_plantada'
-    /** Balança, energia, telemóveis: o que a farma não tem para registar. */
-    | 'meios'
-    | 'outro';
-  seccao: string;
-  decisaoAssociada?: string;
-  estado: 'por_resolver' | 'em_analise' | 'resolvida';
-  dono: string;
-}
+import type { Pendencia } from '@bastet/nucleo/governacao';
+
+export type { Pendencia };
 
 export class BastetDB extends Dexie {
   // --- M1. Cadastro territorial e agronómico ---

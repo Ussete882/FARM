@@ -20,7 +20,11 @@
     "./semaforo": "./src/regras/semaforo.ts",
     "./validacao": "./src/regras/validacao.ts",
     "./i18n": "./src/i18n/nucleo.ts",
-    "./versao": "./src/versao.ts"
+    "./versao": "./src/versao.ts",
+    "./sincronizacao": "./src/sincronizacao.ts",
+    "./papeis": "./src/regras/papeis.ts",
+    "./governacao": "./src/dominio/governacao.ts",
+    "./farma-alcinda": "./src/dados/farma-alcinda.ts"
   },
   "scripts": {
     "lint": "tsc --noEmit",

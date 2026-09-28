@@ -1,0 +1,14 @@
+node_modules
+dist
+.DS_Store
+*.local
+.env
+.env.*
+!.env.example
+
+# Ambiente local
+.vite
+*.tsbuildinfo
+
+# Dados pessoais: ver src/dados/contactos.ts
+*.local.ts

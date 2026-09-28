@@ -1,0 +1,206 @@
+@import 'tailwindcss';
+
+/* ============================================================================
+   BASTET — sistema de desenho claro.
+
+   A hierarquia vem da superfície, não de bordas: tela cinzenta, cartões
+   brancos, blocos interiores cinzento-claros. A cor é usada de duas maneiras,
+   e só duas:
+
+     · um cartão preenchido a cor, no indicador que importa;
+     · pastilhas de estado, com fundo pálido e texto saturado.
+
+   Fora disso não há cor. É o que faz o semáforo do §9.3 continuar a
+   significar alguma coisa.
+   ========================================================================= */
+
+@theme {
+  /* --- Superfícies ------------------------------------------------------ */
+  --color-tela: #ebecec;
+  --color-cartao: #ffffff;
+  /* Bloco interior: linhas de alerta, células de apoio, cabeçalhos de tabela. */
+  --color-bloco: #f5f6f6;
+  --color-bloco-2: #eceeee;
+
+  /* --- Fronteiras: quase invisíveis, só onde a superfície não chega ---- */
+  --color-fio: #e6e8e8;
+  --color-fio-forte: #d8dbdb;
+
+  /* --- Texto ------------------------------------------------------------ */
+  --color-texto: #16191a;
+  --color-texto-2: #5f6666;
+  --color-texto-3: #909797;
+  /* Sobre um cartão preenchido a cor. */
+  --color-texto-inv: #ffffff;
+
+  /* --- Semáforo (§9.3) -------------------------------------------------- */
+  --color-verde: #1f9d55;
+  --color-verde-claro: #2fb366;
+  --color-verde-pastel: #e6f5ec;
+
+  --color-ambar: #b8791b;
+  --color-ambar-claro: #e0a02a;
+  --color-ambar-pastel: #fcf3e3;
+
+  --color-vermelho: #cc3b3b;
+  --color-vermelho-claro: #e05252;
+  --color-vermelho-pastel: #fceded;
+
+  --color-cinzento: #7c8383;
+  --color-cinzento-pastel: #eef0f0;
+
+  /* --- Marca ------------------------------------------------------------ */
+  --color-marca: #1f9d55;
+
+  /* --- Tipografia ------------------------------------------------------- */
+  /* A Plus Jakarta Sans não tem glifos chineses. Sem uma face CJK declarada, o
+     navegador escolhe uma qualquer e o espaçamento sai errado ao lado do
+     latino — por isso a pilha continua para a face de sistema de cada
+     plataforma antes de cair no genérico. */
+  --font-cjk: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC',
+    'Source Han Sans SC', sans-serif;
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, var(--font-cjk);
+  --font-display: 'Plus Jakarta Sans', ui-sans-serif, system-ui, var(--font-cjk);
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+
+  body {
+    margin: 0;
+    overflow-x: hidden;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--color-texto-2);
+    background-color: var(--color-tela);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  table,
+  input[type='number'],
+  .num {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1;
+  }
+
+  ::selection {
+    background: var(--color-verde);
+    color: #ffffff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-texto);
+    outline-offset: 2px;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #cfd3d3;
+    border-radius: 9999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #b4baba;
+    background-clip: content-box;
+  }
+}
+
+@layer components {
+  /* --- Cartão: superfície branca sobre a tela cinzenta ----------------- */
+  .cartao {
+    background: var(--color-cartao);
+    border-radius: 18px;
+    box-shadow: 0 1px 2px rgba(16, 24, 24, 0.04);
+  }
+
+  .cartao-hover {
+    transition:
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+  .cartao-hover:hover {
+    box-shadow: 0 4px 16px -6px rgba(16, 24, 24, 0.16);
+  }
+
+  /* --- Bloco interior: linhas de lista, células de apoio --------------- */
+  .bloco {
+    background: var(--color-bloco);
+    border-radius: 14px;
+  }
+
+  /* --- Botão de abrir, no canto do cartão ------------------------------ */
+  .botao-abrir {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+    background: var(--color-bloco);
+    color: var(--color-texto-2);
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease;
+  }
+  .botao-abrir:hover {
+    background: var(--color-bloco-2);
+    color: var(--color-texto);
+  }
+  /* Sobre um cartão preenchido, o botão inverte. */
+  .cartao-cheio .botao-abrir {
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+  }
+  .cartao-cheio .botao-abrir:hover {
+    background: rgba(255, 255, 255, 0.34);
+  }
+
+  /* --- Rótulo de secção ------------------------------------------------ */
+  .rotulo {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-texto-2);
+  }
+
+  /* --- Código imutável (R4) ------------------------------------------- */
+  .codigo {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: -0.01em;
+    color: var(--color-texto-3);
+  }
+
+  /* --- Números de destaque -------------------------------------------- */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+
+  /* --- Ligação ---------------------------------------------------------- */
+  .ligacao {
+    color: var(--color-texto);
+    text-decoration: underline;
+    text-decoration-color: rgba(22, 25, 26, 0.25);
+    text-underline-offset: 3px;
+    transition: text-decoration-color 0.15s ease;
+  }
+  .ligacao:hover {
+    text-decoration-color: rgba(22, 25, 26, 0.7);
+  }
+}

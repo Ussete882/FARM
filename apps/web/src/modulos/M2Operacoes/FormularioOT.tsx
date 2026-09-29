@@ -12,7 +12,9 @@
 
 import React from 'react';
 
-import { useCiclos, useEquipas, useOrdens, useTalhoes, useTrabalhadores } from '../../dados/consultas';
+import {
+  equipaDoBloco,
+ useCiclos, useEquipas, useOrdens, useTalhoes, useTrabalhadores } from '../../dados/consultas';
 import { gravarOrdem, proximoSequencial } from '../../dados/escrever';
 import { HOJE } from '../../dados/semente';
 import { q, type Unidade } from '@bastet/nucleo/canonico';
@@ -63,7 +65,7 @@ export function FormularioOT({ aoFechar }: { aoFechar: () => void }) {
 
   const talhaoActivo = talhao || talhoes[0]?.codigo || '';
   const ciclo = ciclos.find((c) => c.talhao === talhaoActivo);
-  const equipa = equipas.find((e) => talhaoActivo.startsWith(e.bloco_habitual ?? '§'));
+  const equipa = equipaDoBloco(equipas, talhaoActivo);
   const tecnico = talhaoActivo.startsWith('FA-B01') ? 'TR-00003' : 'TR-00004';
   const unidade = unidadeDe(tipoOperacao);
 

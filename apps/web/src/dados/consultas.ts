@@ -9,7 +9,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 
 import type { CicloCultura } from '@bastet/nucleo/biologico';
 import { blocoDoTalhao } from '@bastet/nucleo/codigos';
-import type { Jorna, Trabalhador } from '@bastet/nucleo/pessoas';
+import type { Equipa, Jorna, Trabalhador } from '@bastet/nucleo/pessoas';
 import type { PesagemColheita, RelatorioDiario } from '@bastet/nucleo/operacoes';
 import { contaParaIndicadores } from '@bastet/nucleo/historico';
 
@@ -104,3 +104,41 @@ export function trabalhadoresDoBloco(
 }
 
 export { blocoDoTalhao };
+
+// ============================================================================
+// Quem responde pelo trabalho
+// ============================================================================
+
+/**
+ * A equipa que trabalha um bloco.
+ *
+ * O plano supunha uma equipa por bloco, cada uma com `bloco_habitual`
+ * preenchido, e os formulários foram escritos contra isso. A Farma Alcinda tem
+ * uma frente única que trabalha as duas zonas — «não existem equipas como tal,
+ * trabalha-se como um todo, apenas divididos por faixas e metas» — e por isso
+ * nenhuma equipa declara bloco.
+ *
+ * Quando ninguém reclama o bloco e só existe uma equipa, é essa: uma frente
+ * única cobre tudo, por definição. Com duas ou mais sem bloco atribuído a
+ * resposta honesta é «não se sabe», e quem chamar isto tem de o dizer em vez de
+ * gravar um registo sem responsável.
+ */
+export function equipaDoBloco(equipas: Equipa[], bloco: string): Equipa | undefined {
+  const declarada = equipas.find((e) => e.bloco_habitual && bloco.startsWith(e.bloco_habitual));
+  if (declarada) return declarada;
+
+  const semBloco = equipas.filter((e) => !e.bloco_habitual);
+  return semBloco.length === 1 ? semBloco[0] : undefined;
+}
+
+/**
+ * Quem chefia o trabalho de campo.
+ *
+ * Na Farma Alcinda é sempre o Sr. Venâncio: faz a chamada, chefia a frente e
+ * escreve os registos. Os formulários não devem procurar por categoria
+ * profissional — «Técnico encarregado de campo» é um cargo do plano que não
+ * existe no quadro real, e procurar por ele devolve ninguém.
+ */
+export function chefeDeCampo(equipas: Equipa[], bloco = ''): string | undefined {
+  return equipaDoBloco(equipas, bloco)?.chefe_turma ?? equipas[0]?.chefe_turma;
+}

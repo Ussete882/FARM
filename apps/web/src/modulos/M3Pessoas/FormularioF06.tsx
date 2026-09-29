@@ -77,7 +77,7 @@ export function FormularioF06({ aoFechar }: { aoFechar: () => void }) {
   const doBloco = React.useMemo(
     () =>
       [...ordens]
-        .filter((o) => o.talhao.startsWith(equipa?.bloco_habitual ?? '§'))
+        .filter((o) => !equipa?.bloco_habitual || o.talhao.startsWith(equipa.bloco_habitual))
         .sort((a, b) => (a.data_prevista < b.data_prevista ? 1 : -1)),
     [ordens, equipa],
   );

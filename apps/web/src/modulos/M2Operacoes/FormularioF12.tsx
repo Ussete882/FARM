@@ -11,7 +11,10 @@
 
 import React from 'react';
 
-import { useMonitorizacoes, useTalhoes, useTrabalhadores } from '../../dados/consultas';
+import {
+  chefeDeCampo,
+  useEquipas,
+ useMonitorizacoes, useTalhoes, useTrabalhadores } from '../../dados/consultas';
 import { gravarMonitorizacao } from '../../dados/escrever';
 import { HOJE } from '../../dados/semente';
 import { q } from '@bastet/nucleo/canonico';
@@ -61,6 +64,7 @@ export function FormularioF12({ aoFechar }: { aoFechar: () => void }) {
   const tr = useT();
   const fmt = useFmt();
   const talhoes = useTalhoes();
+  const equipas = useEquipas();
   const trabalhadores = useTrabalhadores();
   const monitorizacoes = useMonitorizacoes();
 
@@ -75,11 +79,10 @@ export function FormularioF12({ aoFechar }: { aoFechar: () => void }) {
   const [erro, setErro] = React.useState<string | null>(null);
 
   const talhaoActivo = talhao || talhoes[0]?.codigo || '';
-  const tecnicos = React.useMemo(
-    () => trabalhadores.filter((t) => t.categoria_profissional === 'Técnico encarregado de campo'),
-    [trabalhadores],
-  );
-  const observador = tecnicos[0]?.codigo ?? 'TR-00003';
+  // Quem faz a contagem é quem chefia a frente. Procurar por categoria
+  // profissional não serve: «Técnico encarregado de campo» é um cargo do plano
+  // que não existe no quadro real, e procurar por ele devolve ninguém.
+  const observador = chefeDeCampo(equipas, talhaoActivo) ?? trabalhadores[0]?.codigo ?? '';
 
   const limiarParam = parametroEm('MAC-LIMIAR-PERCEVEJO', HOJE);
   const limiar = limiarParam?.valor ?? 0.4;

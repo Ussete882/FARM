@@ -17,7 +17,9 @@
 import { Check, ChevronLeft, ChevronRight, Timer } from 'lucide-react';
 import React from 'react';
 
-import { useEquipas, useOrdens, useRelatorios, useTalhoes, useTrabalhadores } from '../../dados/consultas';
+import {
+  equipaDoBloco,
+ useEquipas, useOrdens, useRelatorios, useTalhoes, useTrabalhadores } from '../../dados/consultas';
 import { gravarRelatorio } from '../../dados/escrever';
 import { HOJE } from '../../dados/semente';
 import { q } from '@bastet/nucleo/canonico';
@@ -69,7 +71,7 @@ export function FormularioF05({ aoFechar }: { aoFechar: () => void }) {
 
   // --- Valores por omissão inteligentes ----------------------------------
   const [bloco, setBloco] = React.useState('FA-B01');
-  const equipa = equipas.find((e) => e.bloco_habitual === bloco);
+  const equipa = equipaDoBloco(equipas, bloco);
   const membros = React.useMemo(
     () => trabalhadores.filter((t) => t.equipa === equipa?.codigo),
     [trabalhadores, equipa],

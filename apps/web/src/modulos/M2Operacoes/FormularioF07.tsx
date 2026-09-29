@@ -11,7 +11,9 @@
 
 import React from 'react';
 
-import { useCiclos, useEquipas, usePesagens, useTalhoes, useTrabalhadores } from '../../dados/consultas';
+import {
+  equipaDoBloco,
+ useCiclos, useEquipas, usePesagens, useTalhoes, useTrabalhadores } from '../../dados/consultas';
 import { gravarPesagem, proximoSequencial } from '../../dados/escrever';
 import { HOJE } from '../../dados/semente';
 import { q } from '@bastet/nucleo/canonico';
@@ -47,7 +49,7 @@ export function FormularioF07({ aoFechar }: { aoFechar: () => void }) {
   // --- Valores por omissão inteligentes (§25) ----------------------------
   const talhaoActivo = talhao || talhoes[0]?.codigo || '';
   const ciclo = ciclos.find((c) => c.talhao === talhaoActivo);
-  const equipa = equipas.find((e) => talhaoActivo.startsWith(e.bloco_habitual ?? '§'));
+  const equipa = equipaDoBloco(equipas, talhaoActivo);
   const conferente = equipa?.chefe_turma ?? 'TR-00007';
 
   const doTalhao = pesagens

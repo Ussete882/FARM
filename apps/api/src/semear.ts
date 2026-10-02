@@ -20,13 +20,7 @@ import { cifrar } from './acesso';
 import { esperarPorBd, fechar, sql } from './bd';
 import * as repo from './repositorio';
 
-/**
- * A palavra-passe inicial da Direcção.
- *
- * Vem de variável de ambiente. O valor por omissão serve para desenvolvimento
- * local e não deve sobreviver ao primeiro dia em que isto estiver na rede.
- */
-const PALAVRA_PASSE = process.env.BASTET_PALAVRA_PASSE ?? 'alcinda';
+import { exigirConfiguracao, PALAVRA_PASSE_INICIAL as PALAVRA_PASSE } from './ambiente';
 
 async function semearUtilizadores(): Promise<void> {
   // A Direcção não consta do quadro de pessoal: a lista do gestor são as 22
@@ -89,13 +83,14 @@ async function semearObjectos(): Promise<number> {
 }
 
 async function semear(): Promise<void> {
+  exigirConfiguracao();
   await esperarPorBd();
   await semearUtilizadores();
   const novos = await semearObjectos();
 
   const [{ n }] = await sql<{ n: string }[]>`select count(*)::text as n from objecto`;
   console.log(`  ${novos} objectos novos; ${n} no total.`);
-  console.log(`  Direcção: DIR-01 / ${PALAVRA_PASSE}`);
+  console.log('  Direcção: DIR-01');
 }
 
 semear()

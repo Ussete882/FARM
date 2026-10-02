@@ -14,12 +14,14 @@ import { readdir, readFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { exigirConfiguracao } from './ambiente';
 import { esperarPorBd, fechar, sql } from './bd';
 
 const AQUI = dirname(fileURLToPath(import.meta.url));
 const PASTA = join(AQUI, '..', '..', '..', 'infra', 'migracoes');
 
 async function migrar(): Promise<void> {
+  exigirConfiguracao();
   await esperarPorBd();
 
   await sql`

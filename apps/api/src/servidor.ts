@@ -34,7 +34,9 @@ import {
   testemunhoDoCabecalho,
   type Sessao,
 } from './acesso';
+import { AMBIENTE, emProducao, exigirConfiguracao, ORIGENS, PORTA } from './ambiente';
 import { esperarPorBd, sql } from './bd';
+import { esperaEmSegundos, limparFalhas, registarFalha } from './travao';
 import * as repo from './repositorio';
 import { hojeNoServidor, validarNoServidor } from './validar';
 
@@ -45,7 +47,7 @@ const app = new Hono<{ Variables: Variaveis }>();
 app.use(
   '*',
   cors({
-    origin: (process.env.BASTET_ORIGENS ?? 'http://localhost:3000').split(','),
+    origin: ORIGENS,
     allowHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
   }),
@@ -58,7 +60,12 @@ app.use(
 app.get('/saude', async (c) => {
   try {
     await sql`select 1`;
-    return c.json({ bem: true, versaoNucleo: VERSAO_NUCLEO, hoje: hojeNoServidor() });
+    return c.json({
+      bem: true,
+      versaoNucleo: VERSAO_NUCLEO,
+      hoje: hojeNoServidor(),
+      ambiente: AMBIENTE,
+    });
   } catch {
     return c.json({ bem: false, versaoNucleo: VERSAO_NUCLEO }, 503);
   }
@@ -71,11 +78,27 @@ app.post('/entrar', async (c) => {
   }>();
   if (!utilizador || !palavraPasse) return c.json({ erro: 'Faltam credenciais.' }, 400);
 
+  // Sem travão, uma palavra-passe pode ser tentada à velocidade da rede.
+  const origem =
+    c.req.header('x-forwarded-for')?.split(',')[0].trim() ?? c.req.header('x-real-ip') ?? 'local';
+  const espera = esperaEmSegundos(utilizador, origem);
+  if (espera > 0) {
+    return c.json(
+      { erro: `Demasiadas tentativas. Volte a tentar daqui a ${Math.ceil(espera / 60)} minutos.` },
+      429,
+      { 'Retry-After': String(espera) },
+    );
+  }
+
   const r = await entrarComPalavraPasse(utilizador, palavraPasse);
   // A mesma resposta para utilizador que não existe e para palavra-passe
   // errada: dizer qual das duas falhou é dizer que utilizadores existem.
-  if (!r) return c.json({ erro: 'Credenciais não reconhecidas.' }, 401);
+  if (!r) {
+    registarFalha(utilizador, origem);
+    return c.json({ erro: 'Credenciais não reconhecidas.' }, 401);
+  }
 
+  limparFalhas(utilizador);
   return c.json({ testemunho: r.testemunho, sessao: r.sessao });
 });
 
@@ -269,12 +292,14 @@ async function aplicar(
 // Arrancar
 // ============================================================================
 
-const porta = Number(process.env.BASTET_PORTA ?? 4000);
-
+exigirConfiguracao();
 await esperarPorBd();
-serve({ fetch: app.fetch, port: porta }, (info) => {
-  console.log(`BASTET — servidor em http://localhost:${info.port}`);
+
+serve({ fetch: app.fetch, port: PORTA, hostname: '0.0.0.0' }, (info) => {
+  console.log(`BASTET — servidor na porta ${info.port} (${AMBIENTE})`);
   console.log(`  regras: versão ${VERSAO_NUCLEO}`);
+  console.log(`  origens: ${ORIGENS.join(', ')}`);
+  if (!emProducao) console.log('  valores de desenvolvimento em uso.');
 });
 
 export { app };

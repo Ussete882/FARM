@@ -224,6 +224,25 @@ describe.runIf(process.env.CI !== 'true')('Sincronização', () => {
     expect(linhas.some((l) => !l.aceite)).toBe(true);
   });
 
+  it('trava as tentativas de entrada, sem bloquear os outros', async () => {
+    if (!haServidor) return;
+
+    const tenta = (quem: string, segredo: string) =>
+      fetch(`${BASE}/entrar`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ utilizador: quem, palavraPasse: segredo }),
+      });
+
+    // Oito enganos na mesma conta: à nona, trava.
+    for (let i = 0; i < 8; i++) await tenta('TESTE-TRAVAO', 'errada');
+    expect((await tenta('TESTE-TRAVAO', 'errada')).status).toBe(429);
+
+    // E quem não se enganou continua a entrar: a farma fala toda pela mesma
+    // rede, e o travão da conta não pode fechar a porta ao escritório.
+    expect((await tenta('TESTE-CAMPO', 'teste')).status).toBe(200);
+  });
+
   it('não expõe rota de remoção (§24.5)', async () => {
     if (!haServidor) return;
     const r = await fetch(`${BASE}/objecto/FA-B01-T90`, {

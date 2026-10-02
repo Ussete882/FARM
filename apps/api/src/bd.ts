@@ -8,9 +8,19 @@
 
 import postgres from 'postgres';
 
-export const LIGACAO =
-  process.env.BASTET_BD ?? 'postgres://bastet:bastet@localhost:5433/bastet';
+import { emProducao, LIGACAO_BD } from './ambiente';
 
+export const LIGACAO = LIGACAO_BD;
+
+/**
+ * O TLS decide-se na cadeia de ligação (`?sslmode=require`), não aqui.
+ *
+ * Forçá-lo no código parecia mais seguro e era mais frágil: um Postgres na
+ * rede privada do próprio alojamento não usa TLS, não precisa, e o servidor
+ * recusava-se a falar com ele. Quem instala é que sabe por onde passa o
+ * tráfego — o que o sistema faz é avisar se em produção a cadeia não disser
+ * nada sobre isso.
+ */
 export const sql = postgres(LIGACAO, {
   // Os avisos do Postgres («a tabela já existe», «a sequência já existe») não
   // são erros e enchiam o arranque de ruído.
@@ -29,13 +39,33 @@ export async function fechar(): Promise<void> {
  * uma questão de segundos.
  */
 export async function esperarPorBd(tentativas = 20): Promise<void> {
+  let ultimo: unknown;
   for (let i = 1; i <= tentativas; i++) {
     try {
       await sql`select 1`;
       return;
     } catch (e) {
-      if (i === tentativas) throw e;
-      await new Promise((r) => setTimeout(r, 1000));
+      ultimo = e;
+      if (i < tentativas) await new Promise((r) => setTimeout(r, 1000));
     }
   }
+
+  // Quem lê isto está a instalar o sistema, não a depurá-lo. Uma pilha de
+  // chamadas do driver não lhe diz o que fazer a seguir; a cadeia de ligação,
+  // sem a palavra-passe, diz.
+  const motivo = ultimo instanceof Error ? ultimo.message : String(ultimo);
+  console.error('\nBASTET — não foi possível falar com a base de dados.\n');
+  console.error(`  ligação   ${semSegredo(LIGACAO)}`);
+  console.error(`  motivo    ${motivo}`);
+  if (emProducao && !/sslmode=/.test(LIGACAO)) {
+    console.error('  nota      a cadeia não indica sslmode. Um Postgres gerido costuma');
+    console.error('            exigir `?sslmode=require`.');
+  }
+  console.error('');
+  process.exit(1);
+}
+
+/** A cadeia de ligação sem a palavra-passe, para poder ir para um registo. */
+export function semSegredo(cadeia: string): string {
+  return cadeia.replace(/\/\/([^:/@]+):[^@]*@/, '//$1:***@');
 }

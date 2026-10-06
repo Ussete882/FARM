@@ -1,25 +1,32 @@
 /**
  * BASTET — semeadura local.
  *
- * Os dados vêm de `@bastet/nucleo/farma-alcinda`, que é o mesmo ficheiro que o
- * servidor usa. Não são duas cópias que se parecem: é a mesma função, e como a
- * geração é determinística — os códigos vêm dos dados, não de contadores — os
- * dois lados produzem objectos idênticos. A sincronização não tem nada que
- * reconciliar no primeiro arranque.
+ * **Só corre em desenvolvimento.** Publicado, o cliente nasce vazio e enche-se
+ * sincronizando: os dados vêm do servidor, de quem tiver autorização para os
+ * ver, e não de um ficheiro compilado dentro da aplicação.
  *
- * O que fica aqui é só a escrita no IndexedDB, que é a parte que não pode
- * viver no núcleo.
+ * A diferença não é de arrumação. A semente traz os 22 nomes do quadro de
+ * pessoal, e `contactos.local.ts` traz 21 números de telemóvel. Compilados para
+ * dentro do pacote, iam parar a um endereço público — e qualquer pessoa com o
+ * link ficava com o registo de pessoal da farma. Guardámos esses contactos fora
+ * do repositório justamente para isso não acontecer; de nada serviria se a
+ * compilação os voltasse a pôr lá.
+ *
+ * Por isso a importação é dinâmica e vive dentro de um ramo que só existe em
+ * desenvolvimento: compilado, o ramo desaparece e os dados com ele. Há um teste
+ * que percorre o pacote compilado à procura de um nome e de um número — porque
+ * esta garantia é do tipo que se quebra em silêncio.
  */
 
-import { construirSemente, SEMENTE_VERSAO } from '@bastet/nucleo/farma-alcinda';
+import { SEMENTE_VERSAO } from '@bastet/nucleo/contexto';
 
-import { CONTACTOS } from './contactos';
 import { db, TABELAS } from './db';
 
-export { SEMENTE_VERSAO };
-export { UNIDADE, PROJECTO, HOJE, CAMPANHA } from '@bastet/nucleo/farma-alcinda';
+export { SEMENTE_VERSAO, UNIDADE, PROJECTO, HOJE, CAMPANHA } from '@bastet/nucleo/contexto';
 
 export async function semearSeVazio(): Promise<boolean> {
+  if (!import.meta.env.DEV) return false;
+
   const marca = localStorage.getItem('bastet:semente');
   const jaTem = await db.trabalhadores.count();
 
@@ -32,8 +39,10 @@ export async function semearSeVazio(): Promise<boolean> {
 }
 
 export async function semear(): Promise<void> {
-  // Os contactos entram por parâmetro: vivem fora do repositório e o núcleo
-  // não os conhece.
+  if (!import.meta.env.DEV) return;
+
+  const { construirSemente } = await import('@bastet/nucleo/farma-alcinda');
+  const { CONTACTOS } = await import('./contactos');
   const s = construirSemente(CONTACTOS);
 
   await db.transaction(

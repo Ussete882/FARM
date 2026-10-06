@@ -1,0 +1,34 @@
+# BASTET — publicação.
+#
+# O cliente é estático e vai para a CDN. A API é uma função no mesmo domínio,
+# para não haver CORS entre eles e o testemunho de sessão nunca atravessar
+# origens.
+#
+# `base` é a raiz do repositório e não `apps/web`: a função importa
+# `apps/api/src/app`, que por sua vez importa `@bastet/nucleo`. Com a base
+# apontada ao cliente, o empacotador não alcançava nenhum dos dois.
+
+[build]
+  base = "."
+  command = "npm run build --workspace @bastet/web"
+  publish = "apps/web/dist"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "22"
+  BASTET_AMBIENTE = "producao"
+
+# As funções v2 declaram o seu caminho em `config.path` e ganham a esta regra.
+# Ela é o resto: uma aplicação de página única serve o index em qualquer rota,
+# e o encaminhamento faz-se no navegador.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

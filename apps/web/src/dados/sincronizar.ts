@@ -26,7 +26,17 @@ import { VERSAO_NUCLEO } from '@bastet/nucleo/versao';
 
 import { db, type NaSaida } from './db';
 
-export const SERVIDOR = import.meta.env.VITE_BASTET_API ?? 'http://localhost:4000';
+/**
+ * Onde fica o servidor.
+ *
+ * Publicado, o cliente e a API vivem no mesmo domínio e a API responde em
+ * `/api`. Não há CORS entre eles e o testemunho de sessão nunca atravessa
+ * origens — o que também significa que não há configuração para errar.
+ *
+ * Em desenvolvimento são dois processos, e aí a origem tem de ser dita.
+ */
+export const SERVIDOR =
+  import.meta.env.VITE_BASTET_API ?? (import.meta.env.DEV ? 'http://localhost:4000' : '/api');
 
 const CURSOR = 'sincronizacao:cursor';
 const TESTEMUNHO = 'sincronizacao:testemunho';

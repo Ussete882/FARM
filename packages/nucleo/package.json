@@ -24,7 +24,8 @@
     "./sincronizacao": "./src/sincronizacao.ts",
     "./papeis": "./src/regras/papeis.ts",
     "./governacao": "./src/dominio/governacao.ts",
-    "./farma-alcinda": "./src/dados/farma-alcinda.ts"
+    "./farma-alcinda": "./src/dados/farma-alcinda.ts",
+    "./contexto": "./src/dados/contexto.ts"
   },
   "scripts": {
     "lint": "tsc --noEmit",

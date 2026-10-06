@@ -12,3 +12,6 @@ dist
 
 # Dados pessoais: ver src/dados/contactos.ts
 *.local.ts
+
+# Local Netlify folder
+.netlify

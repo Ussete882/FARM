@@ -22,6 +22,18 @@ export const LIGACAO = LIGACAO_BD;
  * nada sobre isso.
  */
 export const sql = postgres(LIGACAO, {
+  /**
+   * Uma ligação por instância.
+   *
+   * Numa função sem servidor há tantas instâncias quantos os pedidos em
+   * paralelo, e cada uma com o seu grupo de ligações esgotava o Postgres
+   * depressa. Uma só por instância, devolvida ao fim de vinte segundos, é o que
+   * cabe. Num processo permanente isto é conservador e não custa nada: o volume
+   * desta farma são dezenas de escritas por semana.
+   */
+  max: 1,
+  idle_timeout: 20,
+  connect_timeout: 10,
   // Os avisos do Postgres («a tabela já existe», «a sequência já existe») não
   // são erros e enchiam o arranque de ruído.
   onnotice: () => {},

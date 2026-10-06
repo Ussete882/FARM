@@ -37,10 +37,8 @@ import type { Pendencia } from '../dominio/governacao';
 // Contexto da instanciação
 // ============================================================================
 
-export const UNIDADE = 'FA';
-export const PROJECTO = 'PRJ-FA';
-export const HOJE = '2026-09-28';
-export const CAMPANHA = '2025/26';
+export { UNIDADE, PROJECTO, HOJE, CAMPANHA, SEMENTE_VERSAO } from './contexto';
+import { HOJE, UNIDADE } from './contexto';
 
 /**
  * Quem carimba a semente. Não é o Gestor da Farma — esse não consta da lista
@@ -557,5 +555,3 @@ export function construirSemente(contactos: Record<string, string> = {}): Sement
   };
 }
 
-/** Identidade desta semente. Quando muda, a base local é refeita. */
-export const SEMENTE_VERSAO = '2026-09-28-dados-do-gestor';

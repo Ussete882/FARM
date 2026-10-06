@@ -1,15 +1,21 @@
 /**
- * Procura dados pessoais dentro do pacote compilado.
+ * Procura números de telemóvel dentro do pacote compilado.
  *
  * Corre depois de cada `npm run build` e faz a compilação falhar se encontrar
- * alguma coisa. Não é zelo a mais: a primeira vez que compilámos isto para
- * publicar, os 22 nomes e os 21 números de telemóvel do quadro de pessoal
- * estavam lá dentro, prontos a ir para um endereço público — e tínhamo-los
- * guardado fora do repositório precisamente para isso não acontecer.
+ * algum. Não é zelo a mais: a primeira vez que compilámos isto para publicar,
+ * os 21 contactos do quadro de pessoal estavam lá dentro, prontos a ir para um
+ * endereço público — e tínhamo-los guardado fora do repositório precisamente
+ * para isso não acontecer.
  *
  * Um ficheiro no `.gitignore` protege o repositório. Não protege a compilação.
  *
- * O que procura são padrões, não a lista real: a lista vive em
+ * **Os nomes vão de propósito.** Um sistema de gestão tem de nomear quem
+ * trabalha: uma ficha que diz «TR-00014» e mais nada não serve a quem a vai
+ * usar. É uma decisão, não um descuido — e o que ela implica é que quem tiver
+ * o endereço vê o quadro de pessoal. O telemóvel é outra coisa: não é preciso
+ * para nada do que o sistema faz, e é o dado que faz mal se andar à solta.
+ *
+ * O que procura é a forma de um número, não a lista real: a lista vive em
  * `contactos.local.ts`, que este ficheiro não pode ler nem deve.
  */
 
@@ -20,12 +26,6 @@ const PASTA = new URL('./dist/', import.meta.url).pathname.replace(/^\/([A-Za-z]
 
 /** Nove dígitos começados por 8: a forma de um telemóvel moçambicano. */
 const TELEMOVEL = /\b8[2-7]\d{7}\b/g;
-
-/**
- * Nomes do quadro. Estão aqui em pedaços — um apelido não identifica ninguém,
- * e três deles bastam para apanhar a semente inteira se ela voltar a entrar.
- */
-const APELIDOS = ['Mudzia', 'Tomuceni', 'Ndirequereni', 'Manguenda'];
 
 async function ficheiros(pasta) {
   const saida = [];
@@ -47,9 +47,6 @@ for (const f of await ficheiros(PASTA)) {
   if (telefones.length > 0) {
     achados.push(`${nome}: ${telefones.length} número(s) de telemóvel`);
   }
-  for (const apelido of APELIDOS) {
-    if (conteudo.includes(apelido)) achados.push(`${nome}: o nome «${apelido}»`);
-  }
 }
 
 if (achados.length > 0) {
@@ -63,4 +60,4 @@ if (achados.length > 0) {
   process.exit(1);
 }
 
-console.log('  pacote limpo: sem nomes nem contactos do quadro de pessoal.');
+console.log('  pacote sem contactos do quadro de pessoal.');

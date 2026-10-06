@@ -11,16 +11,32 @@
  * repositório obtém um sistema completo com a coluna de contacto vazia, e o
  * ficheiro entra por quem tiver autorização para o ter.
  *
+ * E **nunca saem em produção**, nem que o ficheiro exista na máquina de quem
+ * compila. Da primeira vez que compilámos isto para publicar, os 21 números
+ * foram parar ao JavaScript que ia para a internet: o `.gitignore` protege o
+ * repositório, não protege a compilação. Publicado, os contactos entram pelo
+ * servidor, por quem tiver autorização, e nunca por um ficheiro compilado.
+ *
  * `import.meta.glob` devolve um objecto vazio quando o ficheiro não existe, o
  * que faz isto compilar e correr nas duas situações.
  */
 
-const locais = import.meta.glob('./contactos.local.ts', { eager: true }) as Record<
-  string,
-  { CONTACTOS?: Record<string, string> }
->;
+/**
+ * Telefone por código de trabalhador.
+ *
+ * É uma função e não uma constante por duas razões que se somam: um `await` no
+ * topo do módulo não passa no alvo de compilação, e carregar isto só quando é
+ * preciso deixa o ramo de produção vazio de forma óbvia para quem lê e para o
+ * empacotador.
+ */
+export async function contactosLocais(): Promise<Record<string, string>> {
+  if (!import.meta.env.DEV) return {};
 
-/** Telefone por código de trabalhador. Vazio quando o ficheiro local não existe. */
-export const CONTACTOS: Record<string, string> = Object.values(locais)[0]?.CONTACTOS ?? {};
-
-export const TEM_CONTACTOS = Object.keys(CONTACTOS).length > 0;
+  const locais = import.meta.glob('./contactos.local.ts') as Record<
+    string,
+    () => Promise<{ CONTACTOS?: Record<string, string> }>
+  >;
+  const primeiro = Object.values(locais)[0];
+  if (!primeiro) return {};
+  return (await primeiro()).CONTACTOS ?? {};
+}

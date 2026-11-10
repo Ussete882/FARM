@@ -4,6 +4,7 @@ import { Agua } from '../modulos/M1Cadastro/Agua';
 import { Arvores } from '../modulos/M1Cadastro/Arvores';
 import { Ciclos } from '../modulos/M1Cadastro/Ciclos';
 import { Talhoes } from '../modulos/M1Cadastro/Talhoes';
+import { Terreno3D } from '../modulos/M1Cadastro/Terreno3D';
 import { Monitorizacao, Observacoes } from '../modulos/M2Operacoes/Monitorizacao';
 import { Ordens } from '../modulos/M2Operacoes/Ordens';
 import { Pesagens } from '../modulos/M2Operacoes/Pesagens';
@@ -30,6 +31,7 @@ export const router = createBrowserRouter([
       // M1 — Cadastro territorial e agronómico
       { path: 'talhoes', element: <Talhoes /> },
       { path: 'talhoes/:codigo', element: <Talhoes /> },
+      { path: 'terreno-3d', element: <Terreno3D /> },
       { path: 'arvores', element: <Arvores /> },
       { path: 'ciclos', element: <Ciclos /> },
       { path: 'agua', element: <Agua /> },

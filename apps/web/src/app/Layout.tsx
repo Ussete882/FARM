@@ -12,6 +12,8 @@
 
 import {
   AlertOctagon,
+  Box,
+  ChevronDown,
   Bug,
   CalendarCheck,
   CalendarDays,
@@ -45,6 +47,7 @@ import { HOJE } from '../dados/semente';
 import { useFmt, useT } from '../i18n/contexto';
 import type { T } from '@bastet/nucleo/i18n';
 import { ListaIdiomas, SelectorIdioma } from '../i18n/SelectorIdioma';
+import { FaixaFluxo, PASSOS } from './Fluxo';
 import { Marca } from './Marca';
 import { Pesquisa } from './Pesquisa';
 
@@ -74,7 +77,7 @@ const cod = (texto: string): T => ({ pt: texto, en: texto, zh: texto });
 export const GRUPOS: Grupo[] = [
   {
     chave: 'painel',
-    rotulo: { pt: 'Painel', en: 'Dashboard', zh: '看板' },
+    rotulo: { pt: 'Início', en: 'Home', zh: '首页' },
     icone: LayoutGrid,
     modulo: { pt: 'Camada 6', en: 'Layer 6', zh: '第 6 层' },
     ecras: [
@@ -82,9 +85,9 @@ export const GRUPOS: Grupo[] = [
         para: '/',
         rotulo: { pt: 'Painel diário', en: 'Daily panel', zh: '每日看板' },
         titulo: {
-          pt: 'Painel diário do chefe de turma',
-          en: 'Shift leader daily panel',
-          zh: '班组长每日看板',
+          pt: 'Painel diário do líder de equipa',
+          en: 'Team leader daily panel',
+          zh: '组长每日看板',
         },
         icone: LayoutGrid,
         formulario: '§11.1',
@@ -93,16 +96,30 @@ export const GRUPOS: Grupo[] = [
   },
   {
     chave: 'cadastro',
-    rotulo: { pt: 'Cadastro', en: 'Register', zh: '台账' },
+    rotulo: { pt: 'Terrenos', en: 'Land', zh: '地块' },
     icone: Leaf,
     modulo: cod('M1'),
     ecras: [
       {
         para: '/talhoes',
-        rotulo: { pt: 'Blocos e talhões', en: 'Blocks and plots', zh: '区与地块' },
-        titulo: { pt: 'Blocos e talhões', en: 'Blocks and plots', zh: '区与地块' },
+        rotulo: { pt: 'Terrenos', en: 'Land plots', zh: '地块' },
+        titulo: {
+          pt: 'Terrenos — blocos e talhões',
+          en: 'Land — blocks and plots',
+          zh: '地块——区与地块',
+        },
         icone: Map,
         formulario: 'F-01',
+      },
+      {
+        para: '/terreno-3d',
+        rotulo: { pt: 'Vista 3D', en: '3D view', zh: '3D 视图' },
+        titulo: {
+          pt: 'Vista 3D do terreno',
+          en: '3D land view',
+          zh: '地块 3D 视图',
+        },
+        icone: Box,
       },
       {
         para: '/arvores',
@@ -132,11 +149,45 @@ export const GRUPOS: Grupo[] = [
     ],
   },
   {
+    chave: 'tarefas',
+    rotulo: { pt: 'Tarefas', en: 'Tasks', zh: '任务' },
+    icone: ClipboardList,
+    modulo: cod('M2'),
+    ecras: [
+      {
+        para: '/ordens',
+        rotulo: { pt: 'Tarefas', en: 'Tasks', zh: '任务' },
+        titulo: {
+          pt: 'Tarefas — ordens de trabalho',
+          en: 'Tasks — work orders',
+          zh: '任务——工单',
+        },
+        icone: ClipboardList,
+        formulario: 'E-10',
+      },
+    ],
+  },
+  {
     chave: 'execucao',
-    rotulo: { pt: 'Execução', en: 'Execution', zh: '执行' },
+    rotulo: { pt: 'Campo', en: 'Field', zh: '田间' },
     icone: FileText,
     modulo: cod('M2'),
     ecras: [
+      {
+        para: '/jornas',
+        rotulo: {
+          pt: 'Presenças',
+          en: 'Attendance',
+          zh: '出勤',
+        },
+        titulo: {
+          pt: 'Presenças e jornas',
+          en: 'Attendance and worker-days',
+          zh: '出勤与工日',
+        },
+        icone: CalendarCheck,
+        formulario: 'F-06',
+      },
       {
         para: '/relatorios',
         rotulo: { pt: 'Relatório diário', en: 'Daily report', zh: '田间日报' },
@@ -162,13 +213,6 @@ export const GRUPOS: Grupo[] = [
         },
         icone: Scale,
         formulario: 'F-07',
-      },
-      {
-        para: '/ordens',
-        rotulo: { pt: 'Ordens de trabalho', en: 'Work orders', zh: '工单' },
-        titulo: { pt: 'Ordens de trabalho', en: 'Work orders', zh: '工单' },
-        icone: ClipboardList,
-        formulario: 'E-10',
       },
       {
         para: '/monitorizacao',
@@ -208,21 +252,6 @@ export const GRUPOS: Grupo[] = [
         formulario: 'F-03',
       },
       {
-        para: '/jornas',
-        rotulo: {
-          pt: 'Jornas e presenças',
-          en: 'Worker-days',
-          zh: '工日与出勤',
-        },
-        titulo: {
-          pt: 'Jornas e presenças',
-          en: 'Worker-days and attendance',
-          zh: '工日与出勤',
-        },
-        icone: CalendarCheck,
-        formulario: 'F-06',
-      },
-      {
         para: '/conformidade',
         rotulo: {
           pt: 'Conformidade laboral',
@@ -241,7 +270,7 @@ export const GRUPOS: Grupo[] = [
   },
   {
     chave: 'medicao',
-    rotulo: { pt: 'Medição', en: 'Measurement', zh: '度量' },
+    rotulo: { pt: 'Resultados', en: 'Results', zh: '结果' },
     icone: PieChart,
     modulo: cod('M6'),
     ecras: [
@@ -343,45 +372,35 @@ export function Layout() {
 
   return (
     <div className="flex min-h-screen bg-tela text-texto">
-      {/* ================= Barra lateral de ícones ================= */}
-      <aside className="sticky top-0 hidden h-screen w-[68px] shrink-0 flex-col items-center gap-2 py-4 lg:flex">
+      {/* ================= Barra lateral: ícone e rótulo ================= */}
+      <aside className="sticky top-0 hidden h-screen w-[84px] shrink-0 flex-col items-center gap-1.5 overflow-y-auto py-4 lg:flex">
         {GRUPOS.map((g) => {
           const activo = g.chave === actual.grupo.chave;
           return (
-            <button
+            <BotaoLateral
               key={g.chave}
+              activo={activo}
+              icone={g.icone}
+              rotulo={tr(g.rotulo)}
               onClick={() => navegar(g.ecras[0].para)}
-              title={tr(g.rotulo)}
-              aria-label={tr(g.rotulo)}
-              className={`grid size-11 place-items-center rounded-2xl transition-colors ${
-                activo
-                  ? 'bg-texto text-white'
-                  : 'bg-cartao text-texto-2 hover:bg-bloco-2 hover:text-texto'
-              }`}
-            >
-              <g.icone className="size-[18px]" />
-            </button>
+            />
           );
         })}
 
         <div className="flex-1" />
 
-        <button
+        <BotaoLateral
+          icone={Settings}
+          rotulo={tr({ pt: 'Parâmetros', en: 'Settings', zh: '参数' })}
+          titulo={tr(ROTULO_PARAMETROS)}
           onClick={() => navegar('/parametros')}
-          title={tr(ROTULO_PARAMETROS)}
-          aria-label={tr(ROTULO_PARAMETROS)}
-          className="grid size-11 place-items-center rounded-2xl bg-cartao text-texto-2 transition-colors hover:bg-bloco-2 hover:text-texto"
-        >
-          <Settings className="size-[18px]" />
-        </button>
-        <button
+        />
+        <BotaoLateral
+          icone={User}
+          rotulo={tr({ pt: 'Equipa', en: 'Staff', zh: '人员' })}
+          titulo={tr(ROTULO_TRABALHADORES)}
           onClick={() => navegar('/trabalhadores')}
-          title={tr(ROTULO_TRABALHADORES)}
-          aria-label={tr(ROTULO_TRABALHADORES)}
-          className="grid size-11 place-items-center rounded-2xl bg-cartao text-texto-2 transition-colors hover:bg-bloco-2 hover:text-texto"
-        >
-          <User className="size-[18px]" />
-        </button>
+        />
       </aside>
 
       {/* ================= Coluna principal ================= */}
@@ -452,20 +471,7 @@ export function Layout() {
               </span>
             </button>
 
-            <button
-              onClick={() => navegar('/relatorios')}
-              title={tr({
-                pt: 'Preencher relatório diário de campo (F-05)',
-                en: 'Fill in the daily field report (F-05)',
-                zh: '填写田间作业日报（F-05）',
-              })}
-              className="flex h-10 items-center gap-2 rounded-full bg-texto px-4 text-[13px] font-semibold text-white transition-opacity hover:opacity-90"
-            >
-              <Plus className="size-4" />
-              <span className="hidden sm:inline">
-                {tr({ pt: 'Registar', en: 'Record', zh: '录入' })}
-              </span>
-            </button>
+            <MenuCriar />
 
             <div className="hidden sm:block">
               <SelectorIdioma />
@@ -507,6 +513,8 @@ export function Layout() {
             })}
           </nav>
         )}
+
+        <FaixaFluxo />
 
         <main className="min-w-0 flex-1 pb-4">
           <Outlet />
@@ -563,6 +571,128 @@ export function Layout() {
       )}
 
       <Pesquisa aberta={pesquisaAberta} aoFechar={() => setPesquisaAberta(false)} />
+    </div>
+  );
+}
+
+function BotaoLateral({
+  icone: Icone,
+  rotulo,
+  titulo,
+  activo = false,
+  onClick,
+}: {
+  icone: LucideIcon;
+  rotulo: string;
+  titulo?: string;
+  activo?: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      title={titulo ?? rotulo}
+      aria-current={activo ? 'page' : undefined}
+      className="group flex w-[76px] flex-col items-center gap-1 rounded-2xl py-1"
+    >
+      <span
+        className={`grid size-10 place-items-center rounded-2xl transition-colors ${
+          activo
+            ? 'bg-texto text-white'
+            : 'bg-cartao text-texto-2 group-hover:bg-bloco-2 group-hover:text-texto'
+        }`}
+      >
+        <Icone className="size-[18px]" />
+      </span>
+      <span
+        className={`w-full truncate text-center text-[10.5px] leading-tight ${
+          activo ? 'font-semibold text-texto' : 'text-texto-2 group-hover:text-texto'
+        }`}
+      >
+        {rotulo}
+      </span>
+    </button>
+  );
+}
+
+/**
+ * O botão «Criar» do cabeçalho. Abre os passos do fluxo pela ordem em que se
+ * fazem — terreno, tarefa, presenças, execução, colheita — e cada um leva
+ * directamente ao formulário.
+ */
+function MenuCriar() {
+  const tr = useT();
+  const navegar = useNavigate();
+  const [aberto, setAberto] = React.useState(false);
+  const raiz = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (!aberto) return;
+    const fora = (e: MouseEvent) => {
+      if (raiz.current && !raiz.current.contains(e.target as Node)) setAberto(false);
+    };
+    const esc = (e: KeyboardEvent) => e.key === 'Escape' && setAberto(false);
+    document.addEventListener('mousedown', fora);
+    document.addEventListener('keydown', esc);
+    return () => {
+      document.removeEventListener('mousedown', fora);
+      document.removeEventListener('keydown', esc);
+    };
+  }, [aberto]);
+
+  const passos = PASSOS.filter((p) => p.chave !== 'resultados');
+
+  return (
+    <div ref={raiz} className="relative">
+      <button
+        onClick={() => setAberto((v) => !v)}
+        aria-expanded={aberto}
+        aria-haspopup="menu"
+        aria-label={tr({ pt: 'Criar', en: 'Create', zh: '新建' })}
+        className="flex h-10 items-center gap-2 rounded-full bg-texto px-4 text-[13px] font-semibold text-white transition-opacity hover:opacity-90"
+      >
+        <Plus className="size-4" />
+        <span className="hidden sm:inline">{tr({ pt: 'Criar', en: 'Create', zh: '新建' })}</span>
+        <ChevronDown className="hidden size-3.5 sm:block" />
+      </button>
+      {aberto && (
+        <div
+          role="menu"
+          className="absolute right-0 z-40 mt-2 w-[300px] max-w-[calc(100vw-32px)] rounded-2xl bg-cartao p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.14)]"
+        >
+          <div className="px-2.5 pb-1 pt-1.5 text-[11px] text-texto-3">
+            {tr({
+              pt: 'Pela ordem do fluxo de trabalho',
+              en: 'In workflow order',
+              zh: '按工作流程顺序',
+            })}
+          </div>
+          {passos.map((p, i) => (
+            <button
+              key={p.chave}
+              role="menuitem"
+              onClick={() => {
+                setAberto(false);
+                navegar(`${p.para}?novo=1`);
+              }}
+              className="flex w-full items-start gap-2.5 rounded-xl px-2.5 py-2 text-left hover:bg-bloco"
+            >
+              <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-bloco-2 text-[11px] font-bold text-texto-2">
+                {i + 1}
+              </span>
+              <span className="min-w-0">
+                <span className="flex items-center gap-1.5 text-[13px] font-semibold text-texto">
+                  <p.icone className="size-3.5" />
+                  {tr(p.accao)}
+                </span>
+                <span className="block text-[11.5px] leading-snug text-texto-3">
+                  {tr(p.explicacao)}
+                </span>
+              </span>
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

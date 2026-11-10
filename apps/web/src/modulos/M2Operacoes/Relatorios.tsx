@@ -8,6 +8,8 @@
 
 import { FileCheck, FileText, Plus, Wrench } from 'lucide-react';
 import React from 'react';
+
+import { useAbrirNovo } from '../../app/Fluxo';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { useNomes, useOrdens, useRelatorios } from '../../dados/consultas';
@@ -47,6 +49,7 @@ export function Relatorios() {
   const ordens = useOrdens();
   const nomes = useNomes();
   const [aPreencher, setAPreencher] = React.useState(false);
+  useAbrirNovo(() => setAPreencher(true));
 
   const seleccionado = relatorios.find((r) => r.codigo === codigo);
 
@@ -356,7 +359,7 @@ function FichaRelatorio({
               valor: String(relatorio.efectivo_presente),
             },
             {
-              rotulo: tr({ pt: 'Chefe de turma', en: 'Shift leader', zh: '班组长' }),
+              rotulo: tr({ pt: 'Líder de equipa', en: 'Team leader', zh: '组长' }),
               valor: nomes.get(relatorio.chefe_turma) ?? relatorio.chefe_turma,
             },
             {

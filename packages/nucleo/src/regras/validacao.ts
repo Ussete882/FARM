@@ -8,7 +8,7 @@
  *   excepcao    → grava e alimenta o relatório de excepções
  *
  * R2: «Registo incompleto é rejeitado na entrada, não corrigido depois.»
- * Toda a mensagem diz *porquê*, e não apenas *inválido* — um chefe de turma no
+ * Toda a mensagem diz *porquê*, e não apenas *inválido* — um líder de equipa no
  * fim de um dia de calor precisa de saber o que corrigir, não de um erro.
  *
  * As mensagens são trilingues (`T`) e são construídas aqui, não resolvidas: o

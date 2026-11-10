@@ -10,7 +10,7 @@
  *   · valores por omissão inteligentes
  *   · nenhum formulário de campo pode exigir mais de 3 minutos
  *
- * «Se o registo custar mais de três minutos ao chefe de turma no fim de um dia
+ * «Se o registo custar mais de três minutos ao líder de equipa no fim de um dia
  * de calor, o registo não vai ser feito, e o sistema inteiro cai.»
  */
 
@@ -155,7 +155,7 @@ export function FormularioF05({ aoFechar }: { aoFechar: () => void }) {
       const guardado = await gravarRelatorio(resto);
       setGravado(guardado.codigo);
     } catch (e) {
-      // Uma gravação recusada nunca falha em silêncio: o chefe de turma tem de
+      // Uma gravação recusada nunca falha em silêncio: o líder de equipa tem de
       // saber que o registo não ficou entregue.
       setErro(
         e instanceof Error
@@ -304,7 +304,7 @@ export function FormularioF05({ aoFechar }: { aoFechar: () => void }) {
             </Campo>
 
             <Campo
-              rotulo={tr({ pt: 'Chefe de turma', en: 'Shift leader', zh: '班组长' })}
+              rotulo={tr({ pt: 'Líder de equipa', en: 'Team leader', zh: '组长' })}
               nota={tr({
                 pt: 'Herdado da equipa do bloco.',
                 en: 'Inherited from the block’s team.',

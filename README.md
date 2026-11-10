@@ -5,7 +5,7 @@ Sistema operativo de gestão da **LHF-Foundation**, instanciado no Projecto A �
 
 Esta é a **Fase 1** do faseamento do próprio documento (§26.1): M1 Cadastro
 territorial e agronómico, M2 Operações de campo, M3 Pessoas e assiduidade, mais
-o painel diário do chefe de turma. Corre sem servidor, com persistência local
+o painel diário do líder de equipa. Corre sem servidor, com persistência local
 em IndexedDB, em **português, inglês e mandarim**.
 
 ## Arrancar

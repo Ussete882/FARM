@@ -87,7 +87,7 @@ beforeAll(async () => {
   // Um utilizador de campo, para provar que os poderes do §24.5 mordem.
   await sql`
     insert into utilizador (id, nome, papel, palavra_passe_hash)
-    values ('TESTE-CAMPO', 'Chefe de turma de ensaio', 'chefe_turma', ${await cifrar('teste')})
+    values ('TESTE-CAMPO', 'Líder de equipa de ensaio', 'chefe_turma', ${await cifrar('teste')})
     on conflict (id) do update set papel = 'chefe_turma'
   `;
   const rc = await fetch(`${BASE}/entrar`, {
@@ -143,7 +143,7 @@ describe.runIf(process.env.CI !== 'true')('Sincronização', () => {
 
   it('recusa quem não tem o papel para escrever aquele tipo (§24.5)', async () => {
     if (!haServidor) return;
-    // Um chefe de turma regista jornas e pesagens; não cria talhões.
+    // Um líder de equipa regista jornas e pesagens; não cria talhões.
     const r = await enviar(
       {
         versaoNucleo: VERSAO_NUCLEO,
@@ -153,7 +153,7 @@ describe.runIf(process.env.CI !== 'true')('Sincronização', () => {
     );
     expect(r.resultados[0].aceite).toBe(false);
     expect(r.resultados[0].motivo).toBe('recusado');
-    expect(r.resultados[0].detalhe).toContain('Chefe de turma');
+    expect(r.resultados[0].detalhe).toContain('Líder de equipa');
   });
 
   it('recusa um aparelho a correr outra versão das regras', async () => {

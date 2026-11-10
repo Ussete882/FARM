@@ -456,9 +456,9 @@ const PENDENCIAS: Pendencia[] = [
       zh: '22 人中仅一部智能手机',
     },
     descricao: {
-      pt: 'Uma pessoa tem telemóvel com aplicação, e não há computador na farma. O sistema que o documento desenha pressupõe o chefe de turma a preencher o F-05 no fim de cada dia. Hoje há um aparelho capaz de o fazer e é preciso decidir de quem é, quem o usa e o que acontece quando essa pessoa falta.',
-      en: 'One person has a smartphone with apps, and there is no computer on the farm. The system the document describes assumes the shift leader fills in F-05 at the end of each day. Today there is one device capable of it, and it must be decided whose it is, who uses it, and what happens when that person is away.',
-      zh: '仅有一人拥有可装应用的手机，农场也没有电脑。文件所设计的系统假定班组长在每日收工时填写 F-05。目前只有一台设备能做到这件事，必须确定它归谁、由谁使用，以及该人缺勤时如何处理。',
+      pt: 'Uma pessoa tem telemóvel com aplicação, e não há computador na farma. O sistema que o documento desenha pressupõe o líder de equipa a preencher o F-05 no fim de cada dia. Hoje há um aparelho capaz de o fazer e é preciso decidir de quem é, quem o usa e o que acontece quando essa pessoa falta.',
+      en: 'One person has a smartphone with apps, and there is no computer on the farm. The system the document describes assumes the team leader fills in F-05 at the end of each day. Today there is one device capable of it, and it must be decided whose it is, who uses it, and what happens when that person is away.',
+      zh: '仅有一人拥有可装应用的手机，农场也没有电脑。文件所设计的系统假定组长在每日收工时填写 F-05。目前只有一台设备能做到这件事，必须确定它归谁、由谁使用，以及该人缺勤时如何处理。',
     },
     categoria: 'meios',
     seccao: 'Gestor B.1.11 · B.3.21',

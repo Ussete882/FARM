@@ -7,6 +7,8 @@
 
 import { Map, Pencil, Plus, TreeDeciduous } from 'lucide-react';
 import React from 'react';
+
+import { useAbrirNovo } from '../../app/Fluxo';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import {
@@ -49,6 +51,7 @@ export function Talhoes() {
   const pesagens = usePesagens();
   const nomes = useNomes();
   const [aCriar, setACriar] = React.useState(false);
+  useAbrirNovo(() => setACriar(true));
   const [aAlterar, setAAlterar] = React.useState(false);
 
   const seleccionado = talhoes.find((t) => t.codigo === codigo);
@@ -72,7 +75,7 @@ export function Talhoes() {
         !aAlterar && (
           <Botao variante="primario" onClick={() => setACriar(true)}>
             <Plus className="size-3.5" />
-            {tr({ pt: 'Novo talhão', en: 'New plot', zh: '新建地块' })}
+            {tr({ pt: 'Criar terreno', en: 'Create land plot', zh: '新建地块' })}
           </Botao>
         )
       }

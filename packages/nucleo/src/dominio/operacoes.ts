@@ -324,7 +324,7 @@ export interface Operacao extends ObjectoCanonico {
 
   /** Pelo menos um trabalhador activo. */
   executantes: Referencia[];
-  /** Chefe de turma ou técnico. */
+  /** Líder de equipa ou técnico. */
   responsavel: Referencia;
 
   /** Calculado a partir das presenças. */

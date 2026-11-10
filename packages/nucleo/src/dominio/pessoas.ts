@@ -58,9 +58,9 @@ export const ROTULO_CATEGORIA: Record<string, T> = {
     zh: '田间技术主管',
   },
   'Chefe de turma de campo': {
-    pt: 'Chefe de turma de campo',
-    en: 'Field shift leader',
-    zh: '田间班组长',
+    pt: 'Líder de equipa de campo',
+    en: 'Field team leader',
+    zh: '田间组长',
   },
   'Trabalhador de campo': {
     pt: 'Trabalhador de campo',
@@ -291,7 +291,7 @@ export interface Jorna extends ObjectoCanonico {
 
   equipa: Referencia;
   chefe: Referencia;
-  /** Chefe de turma. */
+  /** Líder de equipa. */
   validado_por?: Referencia;
   /** Calculado a partir da tabela salarial vigente. */
   custo_calculado?: Quantidade;

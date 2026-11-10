@@ -71,7 +71,7 @@ const DONO = {
   agronomo: { pt: 'Agrónomo responsável', en: 'Responsible agronomist', zh: '责任农艺师' },
   gestor: { pt: 'Gestor da Farma', en: 'Farm Manager', zh: '农场经理' },
   tecnico: { pt: 'Técnico encarregado', en: 'Field supervisor', zh: '现场技术主管' },
-  chefeTurma: { pt: 'Chefe de turma', en: 'Shift leader', zh: '班组长' },
+  chefeTurma: { pt: 'Líder de equipa', en: 'Team leader', zh: '组长' },
   rh: { pt: 'Director de Recursos Humanos', en: 'HR Director', zh: '人力资源总监' },
 } satisfies Record<string, T>;
 

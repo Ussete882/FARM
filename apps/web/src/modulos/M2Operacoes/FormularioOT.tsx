@@ -11,6 +11,7 @@
  */
 
 import React from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 
 import {
   equipaDoBloco,
@@ -56,7 +57,9 @@ export function FormularioOT({ aoFechar }: { aoFechar: () => void }) {
   const ordens = useOrdens();
 
   const [tipoOperacao, setTipoOperacao] = React.useState('OPT-11');
-  const [talhao, setTalhao] = React.useState('');
+  // Vindo de «Criar terreno → Criar tarefa», o terreno já vem escolhido.
+  const [params] = useSearchParams();
+  const [talhao, setTalhao] = React.useState(() => params.get('talhao') ?? '');
   const [dataPrevista, setDataPrevista] = React.useState(HOJE);
   const [jornas, setJornas] = React.useState<number | ''>('');
   const [quantidade, setQuantidade] = React.useState<number | ''>('');
@@ -162,12 +165,37 @@ export function FormularioOT({ aoFechar }: { aoFechar: () => void }) {
     }
   };
 
+  if (talhoes.length === 0) {
+    return (
+      <section className="cartao flex flex-wrap items-center justify-between gap-3 p-5">
+        <p className="text-[13px] text-texto-2">
+          {tr({
+            pt: 'Uma tarefa acontece num terreno — e ainda não há nenhum registado.',
+            en: 'A task happens on a land plot — and none has been recorded yet.',
+            zh: '任务须落在地块上——目前尚未登记任何地块。',
+          })}
+        </p>
+        <div className="flex gap-2">
+          <button onClick={aoFechar} className="rounded-full bg-bloco px-3.5 py-1.5 text-[12px] font-semibold text-texto-2">
+            {tr({ pt: 'Cancelar', en: 'Cancel', zh: '取消' })}
+          </button>
+          <Link
+            to="/talhoes?novo=1"
+            className="rounded-full bg-texto px-3.5 py-1.5 text-[12px] font-semibold text-white"
+          >
+            {tr({ pt: 'Criar terreno primeiro', en: 'Create a land plot first', zh: '先新建地块' })}
+          </Link>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <Formulario
       titulo={tr({
-        pt: 'Emitir ordem de trabalho',
-        en: 'Issue a work order',
-        zh: '开具工单',
+        pt: 'Criar tarefa (ordem de trabalho)',
+        en: 'Create task (work order)',
+        zh: '新建任务（工单）',
       })}
       formulario="E-10"
       codigo={cod}

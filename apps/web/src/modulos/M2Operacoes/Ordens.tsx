@@ -7,6 +7,8 @@
  */
 
 import React from 'react';
+
+import { useAbrirNovo } from '../../app/Fluxo';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { useNomes, useOperacoes, useOrdens } from '../../dados/consultas';
@@ -37,6 +39,7 @@ export function Ordens() {
   const operacoes = useOperacoes();
   const nomes = useNomes();
   const [aEmitir, setAEmitir] = React.useState(false);
+  useAbrirNovo(() => setAEmitir(true));
 
   const seleccionada = ordens.find((o) => o.codigo === codigo);
   const operacaoDa = (cod: string) => operacoes.find((op) => op.ordem_trabalho === cod);
@@ -60,7 +63,7 @@ export function Ordens() {
         !aEmitir && (
           <Botao variante="primario" onClick={() => setAEmitir(true)}>
             <Plus className="size-3.5" />
-            {tr({ pt: 'Emitir ordem', en: 'Issue an order', zh: '开具工单' })}
+            {tr({ pt: 'Criar tarefa', en: 'Create task', zh: '新建任务' })}
           </Botao>
         )
       }

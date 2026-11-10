@@ -4,7 +4,7 @@
  * «Este é o registo mais frequente do sistema. É a base do custo de
  * mão-de-obra, da produtividade e do cumprimento legal do registo de horas.»
  *
- * A folha é um acto único do chefe de turma sobre a equipa inteira, não dez
+ * A folha é um acto único do líder de equipa sobre a equipa inteira, não dez
  * actos independentes — e é preenchida no fim de um turno, debaixo dos três
  * minutos do §25. Daí o desenho: **tudo por omissão presente, com as horas
  * normais da equipa, e só se toca no que foge à norma**. Marcar dez presenças
@@ -39,7 +39,7 @@ import { juntar, resumirRepetidas, validarJorna } from '@bastet/nucleo/validacao
 import { Campo, Derivado, Formulario, Grelha, Seleccao } from '../../design/Formulario';
 import { Codigo, Semaforo } from '../../design/primitivas';
 
-/** Presenças que o chefe de turma marca a partir da lista, sem escrever. */
+/** Presenças que o líder de equipa marca a partir da lista, sem escrever. */
 const AUSENCIAS: Presenca[] = PRESENCAS.filter((p) => p !== 'presente');
 
 export function FormularioF06({ aoFechar }: { aoFechar: () => void }) {

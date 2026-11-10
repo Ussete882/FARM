@@ -1,5 +1,5 @@
 /**
- * BASTET — painel diário do chefe de turma (§11.1).
+ * BASTET — painel diário do líder de equipa (§11.1).
  *
  * O ecrã responde a três perguntas, por esta ordem, e não a mais nenhuma:
  *

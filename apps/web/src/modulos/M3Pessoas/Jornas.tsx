@@ -7,6 +7,8 @@
 
 import { CalendarCheck, Coins, Plus, TrendingDown } from 'lucide-react';
 import React from 'react';
+
+import { useAbrirNovo } from '../../app/Fluxo';
 import { Link } from 'react-router-dom';
 
 import { useJornas, useNomes, useTalhoes } from '../../dados/consultas';
@@ -29,6 +31,7 @@ export function Jornas() {
   const talhoes = useTalhoes();
   const [dia, setDia] = React.useState('');
   const [aRegistar, setARegistar] = React.useState(false);
+  useAbrirNovo(() => setARegistar(true));
 
   const dias = [...new Set(jornas.map((j) => j.data))].sort().reverse();
   const filtradas = dia ? jornas.filter((j) => j.data === dia) : jornas;

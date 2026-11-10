@@ -8,6 +8,8 @@
 
 import { Plus, Scale, Sprout, Timer, Undo2 } from 'lucide-react';
 import React from 'react';
+
+import { useAbrirNovo } from '../../app/Fluxo';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { useCiclos, useNomes, usePesagens, useTalhoes } from '../../dados/consultas';
@@ -46,6 +48,7 @@ export function Pesagens() {
   const nomes = useNomes();
   const [talhaoFiltro, setTalhaoFiltro] = React.useState('');
   const [aRegistar, setARegistar] = React.useState(false);
+  useAbrirNovo(() => setARegistar(true));
 
   const validas = pesagens.filter(contaParaIndicadores);
   const filtradas = talhaoFiltro ? pesagens.filter((p) => p.talhao === talhaoFiltro) : pesagens;

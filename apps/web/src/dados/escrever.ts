@@ -101,7 +101,7 @@ export async function gravarTrabalhador(
 /**
  * Grava a folha de presença inteira numa transacção.
  *
- * A folha é um acto único do chefe de turma, não dez actos independentes: se
+ * A folha é um acto único do líder de equipa, não dez actos independentes: se
  * uma jorna for recusada, nenhuma entra. Meia folha gravada produziria uma
  * assiduidade e um custo de mão-de-obra falsos para o dia.
  */

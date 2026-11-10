@@ -17,6 +17,7 @@ import React from 'react';
 import { useFmt, useT } from '../i18n/contexto';
 import type { T } from '@bastet/nucleo/i18n';
 import type { Resultado } from '@bastet/nucleo/validacao';
+import { ProximoPasso } from '../app/Fluxo';
 import { Botao } from './Pagina';
 import { Codigo, Constatacoes, Rotulo, Semaforo } from './primitivas';
 
@@ -101,6 +102,7 @@ export function Formulario({
             )}
           </p>
         )}
+        <ProximoPasso formulario={formulario} codigo={gravado} />
         <Botao onClick={aoFechar}>{tr({ pt: 'Fechar', en: 'Close', zh: '关闭' })}</Botao>
       </section>
     );

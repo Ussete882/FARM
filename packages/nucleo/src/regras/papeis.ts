@@ -29,7 +29,7 @@ export const ROTULO_PAPEL: Record<Papel, T> = {
   direccao: { pt: 'Direcção', en: 'Directorate', zh: '管理层' },
   agronomo: { pt: 'Agrónomo responsável', en: 'Responsible agronomist', zh: '责任农艺师' },
   tecnico: { pt: 'Técnico encarregado', en: 'Field supervisor', zh: '现场技术主管' },
-  chefe_turma: { pt: 'Chefe de turma', en: 'Shift leader', zh: '班组长' },
+  chefe_turma: { pt: 'Líder de equipa', en: 'Team leader', zh: '组长' },
   recursos_humanos: { pt: 'Recursos Humanos', en: 'Human Resources', zh: '人力资源' },
   qualidade: { pt: 'Qualidade', en: 'Quality', zh: '质量' },
   conformidade: { pt: 'Conformidade', en: 'Compliance', zh: '合规' },

@@ -123,7 +123,7 @@ export function BarraLateral({
           aria-label={tr({ pt: 'Ir para o início', en: 'Go home', zh: '返回首页' })}
           className="flex min-w-0 items-center gap-3 text-left"
         >
-          <Simbolo className={aberta ? 'size-12' : 'size-11'} />
+          <Simbolo className={aberta ? 'w-16' : 'w-[60px]'} />
           {aberta && <NomeMarca grande />}
         </button>
       </div>

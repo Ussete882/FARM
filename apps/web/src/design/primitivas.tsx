@@ -47,29 +47,29 @@ const ESCALA: Record<Cor, EscalaCor> = {
     texto: 'text-verde',
     pastel: 'bg-verde-pastel',
     solido: 'bg-verde-claro',
-    cheio: 'bg-gradient-to-br from-verde-claro to-verde',
-    hex: '#1f9d55',
+    cheio: 'bg-gradient-to-br from-verde to-verde-escuro',
+    hex: '#3bbe4e',
   },
   ambar: {
     texto: 'text-ambar',
     pastel: 'bg-ambar-pastel',
     solido: 'bg-ambar-claro',
-    cheio: 'bg-gradient-to-br from-ambar-claro to-ambar',
-    hex: '#b8791b',
+    cheio: 'bg-gradient-to-br from-ambar to-ambar-escuro',
+    hex: '#fea027',
   },
   vermelho: {
     texto: 'text-vermelho',
     pastel: 'bg-vermelho-pastel',
     solido: 'bg-vermelho-claro',
-    cheio: 'bg-gradient-to-br from-vermelho-claro to-vermelho',
-    hex: '#cc3b3b',
+    cheio: 'bg-gradient-to-br from-vermelho to-vermelho-escuro',
+    hex: '#ed1d23',
   },
   cinzento: {
     texto: 'text-cinzento',
     pastel: 'bg-cinzento-pastel',
     solido: 'bg-cinzento',
     cheio: 'bg-gradient-to-br from-cinzento to-texto-2',
-    hex: '#7c8383',
+    hex: '#8a8894',
   },
 };
 
@@ -194,7 +194,13 @@ export function CartaoMetrica({
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-2.5">
-          <Icone className={`size-[18px] ${cheio ? 'text-white/85' : 'text-texto-3'}`} />
+          {cheio ? (
+            <Icone className="size-[18px] text-white/85" />
+          ) : (
+            <span className="grid size-8 place-items-center rounded-[9px] bg-[var(--area-suave,#f6f6f8)] text-[var(--area-escuro,#77757f)]">
+              <Icone className="size-4" />
+            </span>
+          )}
           <span className={`text-[13.5px] font-semibold ${cheio ? 'text-white' : 'text-texto'}`}>
             {rotulo}
           </span>
@@ -769,8 +775,8 @@ export function GraficoArea({
           const yy = y(v);
           return (
             <g key={v}>
-              <line x1={margemE} y1={yy} x2={largura - 10} y2={yy} stroke="#e6e8e8" strokeWidth="1" />
-              <text x={margemE - 12} y={yy + 4} textAnchor="end" fontSize="12" fill="#909797">
+              <line x1={margemE} y1={yy} x2={largura - 10} y2={yy} stroke="#e6e6ea" strokeWidth="1" />
+              <text x={margemE - 12} y={yy + 4} textAnchor="end" fontSize="12" fill="#77757f">
                 {v}
                 {sufixo}
               </text>
@@ -805,7 +811,7 @@ export function GraficoArea({
           const passo = Math.max(1, Math.ceil(n / 7));
           if (i % passo !== 0 && i !== n - 1) return null;
           return (
-            <text key={i} x={x(i)} y={altura - 6} textAnchor="middle" fontSize="12" fill="#909797">
+            <text key={i} x={x(i)} y={altura - 6} textAnchor="middle" fontSize="12" fill="#77757f">
               {e}
             </text>
           );

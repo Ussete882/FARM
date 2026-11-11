@@ -182,7 +182,7 @@ export function Terreno3D() {
                 step={0.5}
                 value={exagero}
                 onChange={(e) => setExagero(Number(e.target.value))}
-                className="w-20 accent-[#16191a]"
+                className="w-20 accent-[#0e0c19]"
               />
               <span className="num w-7 text-texto">×{exagero}</span>
             </label>

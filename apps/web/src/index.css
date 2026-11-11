@@ -12,45 +12,67 @@
 
    Fora disso não há cor. É o que faz o semáforo do §9.3 continuar a
    significar alguma coisa.
+
+   A identidade é a da LHF-Foundation (lovehappinessfreedomfoundation.com):
+   rótulos em maiúsculas como o menu do site, e o arco-íris de sete cores.
+   O arco-íris é marca, não estado: é o símbolo e a cor de cada uma das sete áreas
+   da navegação (ver app/navegacao.ts). Nunca diz se algo está bem ou mal.
+   O semáforo usa os mesmos verde, laranja e vermelho, escurecidos o
+   bastante para o texto se ler.
    ========================================================================= */
 
 @theme {
-  /* --- Superfícies ------------------------------------------------------ */
-  --color-tela: #ebecec;
+  /* --- Superfícies: o branco da fundação, com a tela só um tom abaixo -- */
+  --color-tela: #f2f2f4;
   --color-cartao: #ffffff;
   /* Bloco interior: linhas de alerta, células de apoio, cabeçalhos de tabela. */
-  --color-bloco: #f5f6f6;
-  --color-bloco-2: #eceeee;
+  --color-bloco: #f6f6f8;
+  --color-bloco-2: #ececf0;
 
   /* --- Fronteiras: quase invisíveis, só onde a superfície não chega ---- */
-  --color-fio: #e6e8e8;
-  --color-fio-forte: #d8dbdb;
+  --color-fio: #e6e6ea;
+  --color-fio-forte: #d5d5dc;
 
-  /* --- Texto ------------------------------------------------------------ */
-  --color-texto: #16191a;
-  --color-texto-2: #5f6666;
-  --color-texto-3: #909797;
+  /* --- Texto: o quase-preto e o cinzento-ardósia do site da fundação --- */
+  --color-texto: #0e0c19;
+  --color-texto-2: #3c3a47;
+  --color-texto-3: #77757f;
   /* Sobre um cartão preenchido a cor. */
   --color-texto-inv: #ffffff;
 
-  /* --- Semáforo (§9.3) -------------------------------------------------- */
-  --color-verde: #1f9d55;
-  --color-verde-claro: #2fb366;
-  --color-verde-pastel: #e6f5ec;
+  /* --- Semáforo (§9.3), nas cores do arco-íris da fundação -------------
+     O tom «claro» é a cor da marca; o tom base é a mesma cor escurecida até
+     o texto se ler sobre branco; o «escuro» é o fim do cartão preenchido. */
+  --color-verde: #1e8f3a;
+  --color-verde-claro: #3bbe4e;
+  --color-verde-escuro: #146b2a;
+  --color-verde-pastel: #e7f7ea;
 
-  --color-ambar: #b8791b;
-  --color-ambar-claro: #e0a02a;
-  --color-ambar-pastel: #fcf3e3;
+  --color-ambar: #b5640a;
+  --color-ambar-claro: #fea027;
+  --color-ambar-escuro: #8a4800;
+  --color-ambar-pastel: #fff2df;
 
-  --color-vermelho: #cc3b3b;
-  --color-vermelho-claro: #e05252;
-  --color-vermelho-pastel: #fceded;
+  --color-vermelho: #c8161c;
+  --color-vermelho-claro: #ed1d23;
+  --color-vermelho-escuro: #9a1015;
+  --color-vermelho-pastel: #fde8e8;
 
-  --color-cinzento: #7c8383;
-  --color-cinzento-pastel: #eef0f0;
+  --color-cinzento: #7a7885;
+  --color-cinzento-pastel: #efeff2;
+
+  /* --- Arco-íris da LHF-Foundation: só na marca, nunca como estado ---- */
+  --color-arco-1: #ed1d23;
+  --color-arco-2: #fea027;
+  --color-arco-3: #f2e205;
+  --color-arco-4: #3bbe4e;
+  --color-arco-5: #4bc3ed;
+  --color-arco-6: #4067ab;
+  --color-arco-7: #873a93;
 
   /* --- Marca ------------------------------------------------------------ */
-  --color-marca: #1f9d55;
+  --color-marca: #0e0c19;
+  --color-acento: #3bbe4e;
 
   /* --- Tipografia ------------------------------------------------------- */
   /* A Plus Jakarta Sans não tem glifos chineses. Sem uma face CJK declarada, o
@@ -89,12 +111,12 @@
   }
 
   ::selection {
-    background: var(--color-verde);
+    background: var(--color-arco-7);
     color: #ffffff;
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-texto);
+    outline: 2px solid var(--color-arco-6);
     outline-offset: 2px;
   }
 
@@ -125,8 +147,8 @@
   /* --- Cartão: superfície branca sobre a tela cinzenta ----------------- */
   .cartao {
     background: var(--color-cartao);
-    border-radius: 18px;
-    box-shadow: 0 1px 2px rgba(16, 24, 24, 0.04);
+    border-radius: 12px;
+    box-shadow: 0 1px 2px rgba(14, 12, 25, 0.05);
   }
 
   .cartao-hover {
@@ -141,7 +163,7 @@
   /* --- Bloco interior: linhas de lista, células de apoio --------------- */
   .bloco {
     background: var(--color-bloco);
-    border-radius: 14px;
+    border-radius: 10px;
   }
 
   /* --- Botão de abrir, no canto do cartão ------------------------------ */
@@ -171,9 +193,12 @@
   }
 
   /* --- Rótulo de secção ------------------------------------------------ */
+  /* Como o menu do site: maiúsculas, negrito, um pouco espaçado. */
   .rotulo {
-    font-size: 12px;
-    font-weight: 500;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     color: var(--color-texto-2);
   }
 
@@ -196,11 +221,11 @@
   .ligacao {
     color: var(--color-texto);
     text-decoration: underline;
-    text-decoration-color: rgba(22, 25, 26, 0.25);
+    text-decoration-color: rgba(14, 12, 25, 0.25);
     text-underline-offset: 3px;
     transition: text-decoration-color 0.15s ease;
   }
   .ligacao:hover {
-    text-decoration-color: rgba(22, 25, 26, 0.7);
+    text-decoration-color: rgba(14, 12, 25, 0.7);
   }
 }

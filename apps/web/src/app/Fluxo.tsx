@@ -31,6 +31,7 @@ import {
   useTalhoes,
 } from '../dados/consultas';
 import { useT } from '../i18n/contexto';
+import { corDaRota } from './navegacao';
 
 export interface Passo {
   chave: string;
@@ -210,34 +211,35 @@ export function FaixaFluxo() {
           const feito = n !== undefined && n > 0;
           const eActual = i === actual;
           const eProximo = i === proximo;
+          const cor = corDaRota(p.para);
           return (
             <li key={p.chave} className="flex min-w-[118px] flex-1 items-center gap-1">
               <Link
                 to={p.para}
                 title={tr(p.explicacao)}
-                className={`flex min-w-0 flex-1 items-center gap-2 rounded-xl px-2.5 py-2 transition-colors ${
-                  eActual
-                    ? 'bg-texto text-white'
-                    : eProximo
-                      ? 'bg-verde-pastel text-texto ring-1 ring-verde/40'
-                      : 'bg-bloco text-texto-2 hover:bg-bloco-2 hover:text-texto'
+                className={`flex min-w-0 flex-1 items-center gap-2 rounded-[10px] px-2.5 py-2 transition-colors ${
+                  eActual || eProximo ? '' : 'bg-bloco text-texto-2 hover:bg-bloco-2 hover:text-texto'
                 }`}
+                style={
+                  eActual
+                    ? { background: cor.base, color: cor.tinta }
+                    : eProximo
+                      ? { background: cor.suave, color: '#0e0c19', boxShadow: `inset 0 0 0 1.5px ${cor.base}` }
+                      : undefined
+                }
               >
                 <span
                   className={`grid size-6 shrink-0 place-items-center rounded-full text-[11px] font-bold ${
-                    feito
-                      ? 'bg-verde text-white'
-                      : eActual
-                        ? 'bg-white/20 text-white'
-                        : 'bg-cartao text-texto-2'
+                    feito ? 'bg-verde text-white' : 'bg-cartao text-texto-2'
                   }`}
+                  style={feito || eActual ? undefined : { color: cor.escuro }}
                 >
                   {feito ? <Check className="size-3.5" /> : i + 1}
                 </span>
                 <span className="min-w-0 leading-tight">
                   <span className="block truncate text-[12.5px] font-semibold">{tr(p.rotulo)}</span>
                   <span
-                    className={`block truncate text-[10.5px] ${eActual ? 'text-white/70' : 'text-texto-3'}`}
+                    className="block truncate text-[10.5px] opacity-70"
                   >
                     {n === undefined
                       ? tr({ pt: 'automático', en: 'automatic', zh: '自动' })

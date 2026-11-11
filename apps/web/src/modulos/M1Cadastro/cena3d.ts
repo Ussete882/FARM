@@ -276,7 +276,7 @@ export function criarCena(
   const contornos = new THREE.Group();
   cena.add(contornos);
   const materialContorno = new THREE.LineBasicMaterial({ color: '#ffffff', transparent: true, opacity: 0.55 });
-  const materialSeleccao = new THREE.LineBasicMaterial({ color: '#16191a' });
+  const materialSeleccao = new THREE.LineBasicMaterial({ color: '#0e0c19' });
   const linhaDe = new Map<string, THREE.Line>();
 
   function contornar() {
@@ -382,9 +382,9 @@ export function criarCena(
   function etiqueta(texto: string, sub: string, x: number, z: number, dy: number, forte: boolean) {
     const el = document.createElement('div');
     el.style.cssText = `font: ${forte ? 700 : 600} ${forte ? 12.5 : 11}px 'Plus Jakarta Sans', system-ui, sans-serif;
-      color:#16191a; background:rgba(255,255,255,${forte ? 0.92 : 0.8}); padding:${forte ? '4px 9px' : '2px 7px'};
+      color:#0e0c19; background:rgba(255,255,255,${forte ? 0.92 : 0.8}); padding:${forte ? '4px 9px' : '2px 7px'};
       border-radius:999px; white-space:nowrap; box-shadow:0 2px 8px rgba(0,0,0,.12); text-align:center; line-height:1.25`;
-    el.innerHTML = `${texto}${sub ? `<div style="font-weight:500;font-size:10px;color:#5f6666">${sub}</div>` : ''}`;
+    el.innerHTML = `${texto}${sub ? `<div style="font-weight:500;font-size:10px;color:#3c3a47">${sub}</div>` : ''}`;
     const obj = new CSS2DObject(el);
     cena.add(obj);
     objetosEtiqueta.push({ obj, x, z, dy });

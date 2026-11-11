@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
+  <defs>
+    <clipPath id="c"><rect x="4" y="19" width="32" height="17"/></clipPath>
+    <clipPath id="s"><rect x="4" y="4" width="32" height="15"/></clipPath>
+  </defs>
+  <rect x="2" y="2" width="36" height="36" fill="#fff"/>
+  <g clip-path="url(#s)" fill="#0e0c19">
+    <circle cx="20" cy="19" r="6.2"/>
+    <rect x="19.25" y="6.4" width="1.5" height="3" rx=".75" transform="rotate(-62 20 19)"/>
+    <rect x="19.25" y="6.4" width="1.5" height="3" rx=".75" transform="rotate(-31 20 19)"/>
+    <rect x="19.25" y="6.4" width="1.5" height="3" rx=".75"/>
+    <rect x="19.25" y="6.4" width="1.5" height="3" rx=".75" transform="rotate(31 20 19)"/>
+    <rect x="19.25" y="6.4" width="1.5" height="3" rx=".75" transform="rotate(62 20 19)"/>
+  </g>
+  <g clip-path="url(#c)" stroke="#fff" stroke-width=".9" stroke-linejoin="round">
+    <polygon points="20,13 -14,44 -4.29,44" fill="#ed1d23"/>
+    <polygon points="20,13 -4.29,44 5.43,44" fill="#fea027"/>
+    <polygon points="20,13 5.43,44 15.14,44" fill="#f2e205"/>
+    <polygon points="20,13 15.14,44 24.86,44" fill="#3bbe4e"/>
+    <polygon points="20,13 24.86,44 34.57,44" fill="#4bc3ed"/>
+    <polygon points="20,13 34.57,44 44.29,44" fill="#4067ab"/>
+    <polygon points="20,13 44.29,44 54,44" fill="#873a93"/>
+  </g>
+  <rect x="2" y="2" width="36" height="36" fill="none" stroke="#0e0c19" stroke-width="3.2"/>
+</svg>
